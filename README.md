@@ -38,7 +38,9 @@ The IAP vulnerability analysis and inconsistency biometrc data collection functi
  $ python ./PolicyAnalysis/network-to-policy_consistency/Preprocessor.py --input ./ext/html_policies --outputdir ./ext/plaintext_policies
 ```
 
-3. Use the following command line to use the NLP tool to generate `<entity, action, datatype>` stataments.
+3. Extract the `tar.gz` file into ext/.
+
+4. Use the following command line to use the NLP tool to generate `<entity, action, datatype>` stataments.
 ```text
  $ python ./PolicyAnalysis/network-to-policy_consistency/PatternExtractionNotebook.py ./ext
 ```
