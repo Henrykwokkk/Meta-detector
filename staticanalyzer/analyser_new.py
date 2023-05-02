@@ -43,10 +43,10 @@ class Analyser_new_analysis:
 
     def __decompile(self, apk_path):
         print("start analyse")
-        a, df, dx = AnalyzeAPK(apk_path)    #输出的分别是a: 一个APK对象、d:一个DalvikVMFormat对象数组和dx：Analysis对象。
-        self.__apk: apk.APK = a     # apk 文件对象，其实就是读取 AndroidManifest.xml 文件, 了解过Android 的程序员应该知道，这个文件中就是清仓文件， 我们申请一些权限，注册 Activity, Service, Broadcast,ContentProvader 都在清仓文件中申请。
-        self.__df = df      #解析出方法调用图
-        self.__dx: Analysis = dx    #我们可以使用 dex 对象， 获取文件中所有类的，所有方法，所有的成员变量和字符串。注意， 这边获取的 dex 对象是一个 list
+        a, df, dx = AnalyzeAPK(apk_path)    
+        self.__apk: apk.APK = a     
+        self.__df = df      
+        self.__dx: Analysis = dx    
 
 
     def __analyse_manifest__(self):
@@ -76,8 +76,7 @@ class Analyser_new_analysis:
     def __root_detection__(self):
         print("start root detection")
         self.__root_analyser = RootAnalyser()
-        self.__root_analyser.analyse(self.__apk, self.__dx)     #检测使用root权限的危险函数及其调用函数
-        pass
+        self.__root_analyser.analyse(self.__apk, self.__dx)    
 
     def __generate_results__(self):
         print("start generating results")
