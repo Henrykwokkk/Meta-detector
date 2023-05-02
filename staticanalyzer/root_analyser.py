@@ -9,9 +9,9 @@ class RootAnalyser:
 
     def analyse(self, a: apk.APK, dx: Analysis):
         print("start root analyser")
-        self.__detect_debug__(dx)   #搜索是否有debug相关的函数
-        self.__detect_su_usage__(dx)    #搜索是否有需要root权限的相关函数的使用
-        self.__detect_su_detection__(dx)    #搜索是否有检测su权限的函数，总的来说就是检测app里是否有要求检测设备被root，如果有说明正常
+        self.__detect_debug__(dx)   
+        self.__detect_su_usage__(dx)    
+        self.__detect_su_detection__(dx)    
         pass
 
     def reports(self) -> dict:
@@ -67,7 +67,7 @@ class RootAnalyser:
         self.su_usages: [(ClassAnalysis, EncodedMethod)] = []
         # su packages
         rss: [MethodClassAnalysis] = dx.find_methods(
-            "Lcom/noshufou/android/su/.*|Lcom/thirdparty/superuser/.*|Leu/chainfire/.*|Lcom/koushikdutta/superuser/.*")     #搜索是否有需要root权限的相关函数的使用
+            "Lcom/noshufou/android/su/.*|Lcom/thirdparty/superuser/.*|Leu/chainfire/.*|Lcom/koushikdutta/superuser/.*")     
         for rst in rss:
             rst: MethodClassAnalysis = rst
             p_list: [(ClassAnalysis, object, int)] = rst.get_xref_from()
@@ -86,7 +86,7 @@ class RootAnalyser:
         print("analysing debugging detection")
         self.debug_detections: [(ClassAnalysis, EncodedMethod)] = []
         rss: [MethodClassAnalysis] = dx.find_methods("Ldexguard/util/.*",
-                                                     "isDebuggable|isDebuggerConnected|isRunningInEmulator|isSignedWithDebugKey")   #使用classes, 或者是find_classes() ，在这里传入的参数是我们的类的名字，搜索是否有debug相关的函数
+                                                     "isDebuggable|isDebuggerConnected|isRunningInEmulator|isSignedWithDebugKey")   
         for rst in rss:
             rst: MethodClassAnalysis = rst
             p_list: [(ClassAnalysis, object, int)] = rst.get_xref_from()
