@@ -56,7 +56,7 @@ class CodeAnalyser:
         }
 
     # NOTE: these sql issues are "probably" issues.
-    def __analyse_sql__(self, a: apk.APK, dx: Analysis):    #检测执行SQL操作的函数来检测是否有SQL注入的风险
+    def __analyse_sql__(self, a: apk.APK, dx: Analysis):    
         print("analysing sqlite")
         # raw query
         methods = dx.find_methods("Landroid/database/sqlite/.*", "execSQL|rawQuery")
@@ -76,8 +76,8 @@ class CodeAnalyser:
                     continue
                 p_method: EncodedMethod = p_method
                 item = (p_class, p_method)
-                if "PRAGMA key" in p_method.get_source():   #get_source表示获取该函数源码，pragma key表示带有"PRAGMA key"的数据库，要获取密钥
-                    if item not in encrypts:  # may contain hardcoded keys
+                if "PRAGMA key" in p_method.get_source():   
+                    if item not in encrypts:  
                         encrypts.append(item)
                 elif item not in raw_query_injects:  # may leak
                     raw_query_injects.append(item)
@@ -99,7 +99,7 @@ class CodeAnalyser:
             m: MethodClassAnalysis = m
             p_list: [(ClassAnalysis, object, int)] = m.get_xref_from()
             for (p_class, p_method, _) in p_list:
-                if type(p_method) is not EncodedMethod: #如果不可以映射到smail语言的方法直接跳过
+                if type(p_method) is not EncodedMethod: 
                     continue
 
                 # iterate parent methodsO
@@ -115,7 +115,7 @@ class CodeAnalyser:
         privRe = re.compile(PRIVADDR)
         # ipv4
         ipv4: [str] = []
-        rs: [StringAnalysis] = dx.find_strings(IPV4ADDR)  #寻找IPV4的地址哪些是私有地址
+        rs: [StringAnalysis] = dx.find_strings(IPV4ADDR)  
         for result in rs:
             result: StringAnalysis = result
             val = result.get_value()
@@ -127,7 +127,7 @@ class CodeAnalyser:
 
         # ipv6
         ipv6: [str] = []
-        rs: [StringAnalysis] = dx.find_strings(IPV6ADDR)        #寻找IPV6的地址哪些是私有地址
+        rs: [StringAnalysis] = dx.find_strings(IPV6ADDR)        
         for result in rs:
             result: StringAnalysis = result
             val = result.get_value()
@@ -153,7 +153,7 @@ class CodeAnalyser:
 
         reECB = re.compile(r'AES/ECB', re.IGNORECASE)  # The App uses ECB mode in Cryptographic encryption algorithm.
         reRsaNoPadding = re.compile(r'rsa/.+/nopadding',
-                                    re.IGNORECASE)  # This App uses RSA Crypto without OAEP padding软件使用了RSA算法，但未使用最佳非对称加密填充方式（OAEP），而如果不使用OAEP，则攻击者只需较少的工作即可解密数据或从密文中推断出特征、模式。.
+                                    re.IGNORECASE)  # This App uses RSA Crypto without OAEP padding
 
         for m in methods:
             # check its parent method to find wrong parameters
@@ -171,7 +171,7 @@ class CodeAnalyser:
                     if ins.get_name() != 'const-string':
                         continue
 
-                    output = ins.get_output()   #get_name表示命名的操作码，get_output则是指令后面的操作对象
+                    output = ins.get_output()   
                     item = (p_class, p_method)
                     if reECB.search(output):
                         if item not in self.encryption_vuln_ecb:
@@ -214,7 +214,7 @@ class CodeAnalyser:
         self.weak_hash: [(ClassAnalysis, EncodedMethod)] = []
 
         # find general weak hash
-        methods = dx.find_methods("Ljava/security/MessageDigest", "getInstance") #搜索提供哈希方法的函数
+        methods = dx.find_methods("Ljava/security/MessageDigest", "getInstance") 
         reWeakHash = re.compile(r'md5|md4|rc2|sha-1', re.IGNORECASE)
         for m in methods:
             # check its parent method to find wrong parameters
@@ -272,7 +272,7 @@ class CodeAnalyser:
                 # find wrong encryption options
                 code: str = p_method.get_source()
                 item = (p_class, p_method)
-                if "setWebContentsDebuggingEnabled(1)" in code:     #获取java源码后如果允许网页调试会有安全风险
+                if "setWebContentsDebuggingEnabled(1)" in code:     
                     if item not in self.webview_debugs:
                         self.webview_debugs.append(item)
                     break
@@ -322,7 +322,7 @@ class CodeAnalyser:
             json_obj = json.load(file)
             trackers = json_obj['trackers']
             # check the code signature
-            for item in trackers:   #遍历tracker列表，将其code-signature替换成delvik字节码的格式，然后再和smail文件里的指令去做匹配
+            for item in trackers:   
                 name = item['name']
                 website = item['website']
                 code_signature: str = item['code_signature']
@@ -331,7 +331,7 @@ class CodeAnalyser:
                     code_signature = code_signature + '/'
 
                 code_signature = code_signature + '.*'  # make the code signature as Lcom/example/.*
-                results = dx.find_classes(code_signature, True)     #后面的true表示非外部类
+                results = dx.find_classes(code_signature, True)     
                 for _ in results:  # contains such tracker
                     self.trackers.append({name: website})
                     break
