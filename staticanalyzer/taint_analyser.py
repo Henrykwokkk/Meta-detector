@@ -83,8 +83,8 @@ class TaintAnalyser:
         # parse flowdroid results
         folder = "../" +"results" + os.path.sep + "flowdroid"
 
-        file_name = a.get_filename().split(os.path.sep)[-1][:-4]    #获取app名称
-        fd_path = os.path.join(folder, file_name + ".xml")      #获取flowdroid分析结果
+        file_name = a.get_filename().split(os.path.sep)[-1][:-4]    
+        fd_path = os.path.join(folder, file_name + ".xml")      
 
         self.leak_id_names: [str] = []
 
@@ -102,7 +102,7 @@ class TaintAnalyser:
         package_name = a.get_package()
         package_name = package_name.replace(".", "/")
 
-        cls: ClassDefItem = d.get_class("L" + package_name + "/R$id;")  # find resource id R class里有不同资源的id
+        cls: ClassDefItem = d.get_class("L" + package_name + "/R$id;")  
         if cls is None:
             print("This application doesn't have an R class")
             return
@@ -124,22 +124,22 @@ class TaintAnalyser:
     def __analyse_flowdroid_result__(self, result_path):
         result_tuple: [(str, str, str, str, str)] = []  # s_id, s_method, s_statement, sink_method, sink_statement
         tree = ElementTree.parse(result_path)
-        root = tree.getroot()   #得到根节点。返回根节点的element对象,一般是<DataFlowResults>
-        results: Element = root.find('Results') #得到第一个匹配Results的子节点，match可以是一个标签名称或者是路径。返回个element
+        root = tree.getroot()   
+        results: Element = root.find('Results') 
         idReg = re.compile(r'\((\d+?)\)')
         if results is None:
             return result_tuple
 
-        for rs in results:  #遍历Results节点下的subElement，遍历results下的结果，每一个rs就是一组流向路径
+        for rs in results:  
             rs: Element = rs
             # sink
-            sink = rs.find("Sink")  #找到第一个匹配的sink，即危险函数
+            sink = rs.find("Sink")  
             sink_attr = sink.attrib
             sink_stm = sink_attr['Statement']
             sink_mtd = sink_attr['Method'][1:-1]
             # sources
-            sources = rs.findall('Sources') #获取所有流向这个sink的路径
-            for scs in sources: #遍历每条路径，一个scs代表一条流向sink的路径
+            sources = rs.findall('Sources') 
+            for scs in sources: 
                 scs: Element = scs
                 children = list(scs)
                 for c in children:  #遍历每条路径里的每个函数
