@@ -20,7 +20,7 @@ class ManifestAnalyser:
 
     def analyse(self, a: apk.APK):
         print('start manifest analyser')
-        self.__get_versions__(a)    #从manifest文件里获取版本相关信息
+        self.__get_versions__(a)    
         self.__get_components__(a)
 
     def reports(self) -> dict:
@@ -58,9 +58,9 @@ class ManifestAnalyser:
         # receivers = a.get_receivers()
         # libraries = a.get_libraries()
         permissions = a.get_permissions()  # e.g. ['android.permission.INTERNET']
-        self.__analyse_permissions__(permissions)   #分析包含哪些类型的权限
-        self.__analyse_activities__(a)  #分析所有activity的启动模式
-        self.__analyse_application__(a) #分析application标签下的其他信息
+        self.__analyse_permissions__(permissions)   
+        self.__analyse_activities__(a)  
+        self.__analyse_application__(a) 
 
     # analyse permissions
     def __analyse_permissions__(self, permissions: [str]):
@@ -76,11 +76,11 @@ class ManifestAnalyser:
         PERM_DIC = self.DVM_PERMISSIONS["MANIFEST_PERMISSION"]
         for perm in permissions:
             perm: str = perm
-            if perm.startswith("android.permission"):   #安卓开发下定义的权限
+            if perm.startswith("android.permission"):   
                 permSuffix = perm[len("android.permission") + 1:]
                 if permSuffix in PERM_DIC:
                     permItem = PERM_DIC[permSuffix]
-                    permDic[permItem[0]].append(permSuffix)     #该app中权限危险类型的分类
+                    permDic[permItem[0]].append(permSuffix)     
                 else:
                     permDic["others"] = perm
             elif perm.startswith("com.oculus.permission"):  #oculus设备下定义的权限
@@ -92,34 +92,34 @@ class ManifestAnalyser:
                     permDic["others"] = perm
 
             else:
-                permDic["others"] = perm    #不是安卓和oculus定义的权限也归类到未知权限
+                permDic["others"] = perm    
 
         self.permissions = permDic
 
     # analyse activities
     def __analyse_activities__(self, a: apk.APK):
-        acs = a.find_tags("activity")    #<activity>是最常用也是最重要的标签, 用于声明一个activity.
+        acs = a.find_tags("activity")    
         package_name = self.package_name
         self.activities_launch_mode = {}
         for activity in acs:
-            name: str = a.get_value_from_tag(activity, "name")  #获取name标签对应的value，即MainActivity
+            name: str = a.get_value_from_tag(activity, "name")  
             if name.startswith("."):
                 name = package_name + name
-            launch_mode = a.get_value_from_tag(activity, "launchMode")  #获取activity的启动模式，一共四种
+            launch_mode = a.get_value_from_tag(activity, "launchMode")  
             if launch_mode is None:
                 launch_mode = "0"
             self.activities_launch_mode[name] = self.LAUNCH_MODES[launch_mode]
 
     # analyse vulns in application
     def __analyse_application__(self, a: apk.APK):
-        self.app_permission = a.get_attribute_value("application", "permission")    #get_attribute_value是获取application标签下permission对应的值
-        self.uses_cleartext_traffic = a.get_attribute_value("application", "usesCleartextTraffic") == "true"    # ==true是表明application标签里是否有著名"usesCleartextTraffic"是true，没有注明就返回false，这里是要求使用明文流量
-        self.boot_aware = a.get_attribute_value("application", "directBootAware") == "true"     #directBootAware为true的时候要求在锁屏下app也可以运转
-        self.debuggable = a.get_attribute_value("application", "debuggable") == "true"  #debuggable表示为true的时候说明其存在被恶意程序调试的危险
+        self.app_permission = a.get_attribute_value("application", "permission")    
+        self.uses_cleartext_traffic = a.get_attribute_value("application", "usesCleartextTraffic") == "true"    
+        self.boot_aware = a.get_attribute_value("application", "directBootAware") == "true"     
+        self.debuggable = a.get_attribute_value("application", "debuggable") == "true"  
         self.network_security_config = a.get_attribute_value("application",
-                                                             "networkSecurityConfig")  # network security config网络安全性配置特性让应用可以在一个安全的声明性配置文件中自定义其网络安全设置
-        self.allow_backup = a.get_attribute_value("application", "allowBackup") == "true"   #是否可以备份app数据
-        self.test_only = a.get_attribute_value("application", "testOnly") == "true" #表明应用只用于测试，可能会暴露漏洞，只能通过adb安装
+                                                             "networkSecurityConfig")  
+        self.allow_backup = a.get_attribute_value("application", "allowBackup") == "true"   
+        self.test_only = a.get_attribute_value("application", "testOnly") == "true" 
 
     DVM_PERMISSIONS = {
         'MANIFEST_PERMISSION': {
@@ -533,23 +533,23 @@ class ManifestAnalyser:
             'READ_PRECISE_PHONE_STATE': ['normal', '',
                                          'Allows read only access to precise phone state. Allows reading of detailed information about phone state for special-use applications such as dialers, carrier applications, or ims applications.'],
             'HAND_TRACKING': ['dangerous', '',
-                                   'Allows an app to use hand tracking component.'],    #oculus下的权限类型
+                                   'Allows an app to use hand tracking component.'],    #oculus permission
             'RENDER_MODEL': ['dangerous', '',
-                              'Allows an app to use model rendering component.'],   #oculus下的权限类型
+                              'Allows an app to use model rendering component.'],   #oculus permission
             'TRACKED_KEYBOARD': ['dangerous', '',
-                              'Allows an app to use keyboard tracking component.'], #oculus下的权限类型
+                              'Allows an app to use keyboard tracking component.'], #oculus permission
             'USE_ANCHOR_API': ['dangerous', '',
                               'Allows an app to use anchor.'],  #oculus下的权限类型
             'FACE_TRACKING': ['dangerous', '',
-                              'Allows an app to use face tracking component.'],     #oculus下的权限类型
+                              'Allows an app to use face tracking component.'],     #oculus permission
             'TOUCH_CONTROLLER_PRO': ['dangerous', '',
-                              'Allows an app to use touch controller component.'],      #oculus下的权限类型
+                              'Allows an app to use touch controller component.'],      #oculus permission
             'BODY_TRACKING': ['dangerous', '',
-                              'Allows an app to use body tracking component.'],     #oculus下的权限类型
+                              'Allows an app to use body tracking component.'],     #oculus permission
             'EYE_TRACKING': ['dangerous', '',
-                              'Allows an app to use eye tracking component.'],      #oculus下的权限类型
+                              'Allows an app to use eye tracking component.'],      #oculus permission
             'DEVICE_CONFIG_PUSH_TO_CLIENT': ['dangerous', '',
-                              'Allows an app to send device configuration to client.'],      #oculus下的权限类型
+                              'Allows an app to send device configuration to client.'],      #oculus permission
         },
 
         'MANIFEST_PERMISSION_GROUP':
