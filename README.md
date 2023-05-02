@@ -25,7 +25,7 @@ The file `PaymentScope\src\ghidra_scripts` needs to be moved to `~/ghidra_script
 ## Usage
 command line 
 ```text
- $ python ./staticanalyser/main.py APK_OR_DIRECTORY_PATH
+ $ python ./staticanalyzer/main.py APK_OR_DIRECTORY_PATH
 ```
 ## Result Analysis
 The analysis results are generated in `results` file. Each app will be output in a `yaml` file. 
