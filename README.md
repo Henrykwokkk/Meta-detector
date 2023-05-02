@@ -18,6 +18,8 @@ sdk: 'path_to_android_sdk'
 ```
 The configuration of IAP vulnerability and biometric data collection usage detection refers to [PaymentScope](https://github.com/OSUSecLab/PaymentScope).
 
+Download PaymentScope repository in PaymentScope folder.
+
 The file `PaymentScope\src\ghidra_scripts` needs to be moved to `~/ghidra_scripts` for running which is required by Ghidra.
 
 ## Usage
