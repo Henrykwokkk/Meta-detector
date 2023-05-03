@@ -25,7 +25,7 @@ def check_Unity_IAP(result_files):
 
 def check_permission_method_incosistency():
     apk = defaultdict(list)
-    for root, dirs, files in os.walk('/disk2/guohy/Metadetector/results/paymentscope/old_app'):
+    for root, dirs, files in os.walk('./results/paymentscope'):
         for dir in dirs:
             if 'HAND' in dir:
                 continue
@@ -39,7 +39,7 @@ def check_permission_method_incosistency():
                     print(dir + ' is protected')
                     break
                 else:
-                    with open (dir_path+'/script.json','r') as f,open('/disk2/guohy/Metadetector/results/old_app/'+dir+'.apk.yaml','r') as g:
+                    with open (dir_path+'/script.json','r') as f,open('./results/'+dir+'.apk.yaml','r') as g:
                         mm = json.load(f)
                         nn = yaml.load(g)
                         for method in mm['ScriptMethod']:
