@@ -110,7 +110,7 @@ class TaintAnalyser:
         fields: [EncodedField] = cls.get_fields()
 
         # match ids with keywords
-        for field in fields:    #遍历R class的属性，即资源id
+        for field in fields:   
             field: EncodedField = field
             value: EncodedValue = field.get_init_value()
 
