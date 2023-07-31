@@ -46,4 +46,4 @@ The IAP vulnerability analysis and inconsistency biometrc data collection functi
 ```text
  $ python ./PolicyAnalysis/network-to-policy_consistency/PatternExtractionNotebook.py ./ext
 ```
-The process results are in `PolicyAnalysis/network-to-policy_consistency/ext/output`
+The process results are in `PolicyAnalysis/network-to-policy_consistency/ext/output`. Transfer the files in this path to JSON format and move the files to `results/policy`.
