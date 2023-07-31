@@ -8,6 +8,7 @@ import yaml
 
 # from analyser import Analyser
 from analyser_new import Analyser_new_analysis
+from policy_java_analyser import java_policy_analysis
 
 
 
@@ -65,16 +66,20 @@ def main():
     folder = "../" + "results" + os.path.sep + "flowdroid"
     if not os.path.exists(folder) or not os.path.isdir(folder):
         os.makedirs(folder, 0o777, True)
-
     for file in file_list:
         print(os.path.split(file)[-1])
         run_(file,sdk_path)
 
 
-
+# def run(path, sdk):
+#     Analyser.start(path, sdk)
 
 def run_(path, sdk):
     Analyser_new_analysis.start(path, sdk)
+    app_name = path.split('/')[-1].split('.')[0]
+    app_name = path.split('/')[-1][:-4]
+    if os.path.exists('../results/policy/{}.json'.format(app_name)):
+        java_policy_analysis.start(path,app_name)
 
 
 if __name__ == '__main__':
