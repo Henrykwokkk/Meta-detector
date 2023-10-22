@@ -28,7 +28,7 @@ command line
  $ python ./staticanalyzer/main.py APK_OR_DIRECTORY_PATH
 ```
 ## Result Analysis
-The analysis results are generated in `results` file. Each app will be output in a `yaml` file. 
+The analysis results are generated in `results` file. Each app will be output in a `yaml` file. The general vulnerability statistics results can be attained from these `yaml` files.
 
 The IAP vulnerability analysis and inconsistency biometrc data collection function usage can be executed by running `result_analysis.py`
 
