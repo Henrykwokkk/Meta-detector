@@ -49,7 +49,7 @@ The IAP vulnerability analysis and inconsistency biometric data collection funct
 The process results are in `PolicyAnalysis/network-to-policy_consistency/ext/output`. Transfer the files in this path to JSON format and move the files to `results/policy`.
 
 ## Publication
-This repository was proposed in the paper accepted by ICSE'24, and we would really appreciate for your citation if this repo helps you.
+This repository was proposed in the paper accepted by [ICSE'24](https://arxiv.org/abs/2402.13815), and we would really appreciate for your citation if this repo helps you.
 ```latex
 @misc{guo2024empirical,
       title={An Empirical Study on Oculus Virtual Reality Applications: Security and Privacy Perspectives}, 
