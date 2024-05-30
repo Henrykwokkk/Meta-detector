@@ -51,13 +51,21 @@ The process results are in `PolicyAnalysis/network-to-policy_consistency/ext/out
 ## Publication
 This repository was proposed in the paper accepted by [ICSE'24](https://arxiv.org/abs/2402.13815), and we would really appreciate for your citation if this repo helps you.
 ```latex
-@misc{guo2024empirical,
-      title={An Empirical Study on Oculus Virtual Reality Applications: Security and Privacy Perspectives}, 
-      author={Hanyang Guo and Hong-Ning Dai and Xiapu Luo and Zibin Zheng and Gengyang Xu and Fengliang He},
-      year={2024},
-      eprint={2402.13815},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE}
+@inproceedings{10.1145/3597503.3639082,
+author = {Guo, Hanyang and Dai, Hong-Ning and Luo, Xiapu and Zheng, Zibin and Xu, Gengyang and He, Fengliang},
+title = {An Empirical Study on Oculus Virtual Reality Applications: Security and Privacy Perspectives},
+year = {2024},
+isbn = {9798400702174},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3597503.3639082},
+doi = {10.1145/3597503.3639082},
+booktitle = {Proceedings of the IEEE/ACM 46th International Conference on Software Engineering},
+articleno = {159},
+numpages = {13},
+keywords = {virtual reality, metaverse, static analysis, security and privacy},
+location = {, Lisbon, Portugal, },
+series = {ICSE '24}
 }
 ```
 
